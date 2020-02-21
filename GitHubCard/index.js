@@ -5,7 +5,7 @@
 
 axios.get('https://api.github.com/users/DMConklin/followers').
   then(response => {
-    console.log(response);
+    console.log(response.data);
   }).
   catch(err => {
     console.log(err);
@@ -124,7 +124,7 @@ axios.get('https://api.github.com/users/DMConklin/followers').
 then(myFollowers => {
   const followersArray = myFollowers.data;
   followersArray.forEach(myFollower => {
-    axios.get(`https://api.github.com/users/${myFollower.login}`).
+    axios.get(myFollower.url).
       then(user => {
         cards.appendChild(createCard(user.data));
       }).
