@@ -4,10 +4,10 @@
 */
 
 axios.get('https://api.github.com/users/DMConklin/followers').
-  then((response) => {
+  then(response => {
     console.log(response);
   }).
-  catch((err) => {
+  catch(err => {
     console.log(err);
   })
 
@@ -33,19 +33,19 @@ axios.get('https://api.github.com/users/DMConklin/followers').
 */
 
 axios.get('https://api.github.com/users/DMConklin/followers').
-then((myFollowers) => {
+then(myFollowers => {
   const followersArray = myFollowers.data;
   followersArray.forEach(myFollower => {
     axios.get(`https://api.github.com/users/${myFollower.login}`).
-      then((user) => {
+      then(user => {
         cards.appendChild(createCard(user.data));
       }).
-      catch((err) => {
+      catch(err => {
         console.log(err);
       })
-  })
+    })
   }).
-catch((err) => {
+catch(err => {
   console.log(err);
 })
 
@@ -77,7 +77,7 @@ catch((err) => {
   bigknell
 */
 
-let createCard = (userData) => {
+let createCard = userData => {
 
   let card = document.createElement('div');
   card.setAttribute('class', 'card');
@@ -129,19 +129,10 @@ let createCard = (userData) => {
 let cards = document.querySelector('.cards');
 
 axios.get('https://api.github.com/users/DMConklin').
-  then((response) => {
+  then(response => {
     cards.appendChild(createCard(response.data));
   }).
-  catch((err) => {
+  catch(err => {
     console.log(err);
   })
 
-// followersArray.forEach(follower => {
-//   axios.get(`https://api.github.com/users/${follower.login}`).
-//     then((response) => {
-//       cards.appendChild(createCard(response.data));
-//     }).
-//     catch((err) => {
-//       console.log(err);
-//     })
-// })
