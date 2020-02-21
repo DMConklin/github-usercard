@@ -3,6 +3,14 @@
            https://api.github.com/users/<your name>
 */
 
+axios.get('https://api.github.com/users/DMConklin').
+  then((response) => {
+    console.log(response);
+  }).
+  catch((err) => {
+    console.log(err);
+  })
+
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
    data in order to use it to build your component function 
@@ -24,7 +32,11 @@
           user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = ['tetondan',
+  'dustinmyers',
+  'justsml',
+  'luishrd',
+  'bigknell'];
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
@@ -53,3 +65,72 @@ const followersArray = [];
   luishrd
   bigknell
 */
+
+let createCard = (userData) => {
+
+  let card = document.createElement('div');
+  card.setAttribute('class', 'card');
+
+  let image = document.createElement('img');
+  image.setAttribute('src', userData.avatar_url);
+  card.appendChild(image);
+
+  let cardInfo = document.createElement('div');
+  cardInfo.setAttribute('class', 'card-info');
+  card.appendChild(cardInfo);
+
+  let name = document.createElement('h3');
+  name.setAttribute('class', 'name');
+  name.textContent = userData.name;
+  cardInfo.appendChild(name);
+
+  let username = document.createElement('p');
+  username.setAttribute('class', 'username');
+  username.textContent = userData.login;
+  cardInfo.appendChild(username);
+
+  let location = document.createElement('p');
+  location.textContent = `Location: ${userData.location === null ? 'N/A' : userData.location}`;
+  cardInfo.appendChild(location);
+
+  let profile = document.createElement('p');
+  cardInfo.appendChild(profile);
+
+  let profileLink = document.createElement('a');
+  profileLink.setAttribute('href', userData.html_url);
+  profile.appendChild(profileLink);
+
+  let followers = document.createElement('p');
+  followers.textContent = `Followers: ${userData.followers}`;
+  cardInfo.appendChild(followers);
+
+  let following = document.createElement('p');
+  following.textContent = `Following: ${userData.following}`;
+  cardInfo.appendChild(following);
+
+  let bio = document.createElement('p');
+  bio.textContent = `Bio: ${userData.bio === null ? 'N/A' : userData.bio}`;
+  cardInfo.appendChild(bio);
+
+  return card;
+}
+
+let cards = document.querySelector('.cards');
+
+axios.get('https://api.github.com/users/DMConklin').
+  then((response) => {
+    cards.appendChild(createCard(response.data));
+  }).
+  catch((err) => {
+    console.log(err);
+  })
+
+followersArray.forEach(follower => {
+  axios.get(`https://api.github.com/users/${follower}`).
+    then((response) => {
+      cards.appendChild(createCard(response.data));
+    }).
+    catch((err) => {
+      console.log(err);
+    })
+})
