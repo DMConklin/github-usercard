@@ -3,7 +3,7 @@
            https://api.github.com/users/<your name>
 */
 
-axios.get('https://api.github.com/users/DMConklin').
+axios.get('https://api.github.com/users/DMConklin/followers').
   then((response) => {
     console.log(response);
   }).
@@ -32,11 +32,22 @@ axios.get('https://api.github.com/users/DMConklin').
           user, and adding that card to the DOM.
 */
 
-const followersArray = ['tetondan',
-  'dustinmyers',
-  'justsml',
-  'luishrd',
-  'bigknell'];
+axios.get('https://api.github.com/users/DMConklin/followers').
+then((myFollowers) => {
+  const followersArray = myFollowers.data;
+  followersArray.forEach(myFollower => {
+    axios.get(`https://api.github.com/users/${myFollower.login}`).
+      then((user) => {
+        cards.appendChild(createCard(user.data));
+      }).
+      catch((err) => {
+        console.log(err);
+      })
+  })
+  }).
+catch((err) => {
+  console.log(err);
+})
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
@@ -125,12 +136,12 @@ axios.get('https://api.github.com/users/DMConklin').
     console.log(err);
   })
 
-followersArray.forEach(follower => {
-  axios.get(`https://api.github.com/users/${follower}`).
-    then((response) => {
-      cards.appendChild(createCard(response.data));
-    }).
-    catch((err) => {
-      console.log(err);
-    })
-})
+// followersArray.forEach(follower => {
+//   axios.get(`https://api.github.com/users/${follower.login}`).
+//     then((response) => {
+//       cards.appendChild(createCard(response.data));
+//     }).
+//     catch((err) => {
+//       console.log(err);
+//     })
+// })
