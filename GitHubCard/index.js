@@ -92,6 +92,7 @@ let createCard = userData => {
 
   let profileLink = document.createElement('a');
   profileLink.setAttribute('href', userData.html_url);
+  profileLink.textContent = userData.html_url;
   profile.appendChild(profileLink);
 
   let followers = document.createElement('p');
